@@ -6,7 +6,7 @@ Follows all rules as provided on Wikipedia
 
 '''
 
-from random import shuffle
+from random import shuffle, randrange
 from typing import Literal, Union
 import matplotlib.pyplot as plt
 ranks = ('A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K')
@@ -323,6 +323,15 @@ class Player:
                 else:
                     self.stay()
 
+    def strategy_random(self):
+    
+        ''' A completely random strategy to test the game '''
+        move = randrange(1, 2)
+        if move == 1:
+            self.hit()
+        else:
+            self.stay()
+
 
 
 
@@ -437,7 +446,7 @@ class Game:
 
 
         # get the move that the player wants to do
-        else:
+        elif self.player.strategy == 'strategy_one':
             self.player.strategy_player(self.dealer.up_card)
 
             self.player.check_bust()
@@ -446,6 +455,9 @@ class Game:
             # which increments by 1 every win, then resets to 1 at a loss
 
             self.pot += self.player.bid(self.player.current_simulated_bid)
+        else:
+            self.player.strategy_random()
+            self.player.check_bust()
 
 
     def check_win(self) -> bool:
