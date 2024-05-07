@@ -326,7 +326,8 @@ class Player:
     def strategy_random(self):
     
         ''' A completely random strategy to test the game '''
-        move = randrange(1, 2)
+        move = randrange(1, 3)
+        self.hand.value()
         if move == 1:
             self.hit()
         else:
@@ -416,6 +417,8 @@ class Game:
     def player_turn(self):
 
         ''' player's turn function '''
+        if self.player.strategy == 'random':
+            self.pot += self.player.bid(10)
 
         if self.player.strategy is None:
 
@@ -494,8 +497,8 @@ class Game:
         '''
 
         if self.check_win():
-            self.player.budget += self.pot
             self.player.current_simulated_bid += self.player.starting_bid
+            # self.player.budget += self.pot
         else:
             self.player.current_simulated_bid = self.player.starting_bid
 
@@ -540,8 +543,10 @@ class Game:
                 print('You won this round.')
             else:
                 print('You lost this round.')
-        else:
+        elif self.player.strategy == "strategy_one":
             self.change_bid()
+        else:
+            self.check_win()
 
         self.log_game()
         # print(data[-1])
